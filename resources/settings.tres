@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SettingResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/SettingResource.cs" id="1_1fo0h"]
+
+[resource]
+script = ExtResource("1_1fo0h")
+windowType = 3
+Borderless = false
+masterVolume = 50
+musicVolume = 50
+soundVolume = 50
+keybinds = {}
