@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://dtf858863evol"]
+
+[ext_resource type="Script" path="res://scripts/World.cs" id="1_d2yaj"]
+[ext_resource type="Script" path="res://scripts/entities/Player.cs" id="2_84f0f"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0aveo"]
+radius = 20.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x6fo7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_1mqip"]
+size = Vector3(2, 2, 2)
+
+[node name="Prototype" type="Node3D"]
+script = ExtResource("1_d2yaj")
+
+[node name="EntityCollector" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EntityCollector"]
+shape = SubResource("SphereShape3D_0aveo")
+
+[node name="Entities" type="Node" parent="."]
+
+[node name="Ally" type="Node" parent="Entities"]
+
+[node name="Player" type="CharacterBody3D" parent="Entities/Ally"]
+script = ExtResource("2_84f0f")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Ally/Player"]
+shape = SubResource("BoxShape3D_x6fo7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Ally/Player"]
+mesh = SubResource("BoxMesh_1mqip")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Entities/Ally/Player"]
+
+[node name="Enemy" type="Node" parent="Entities"]
+
+[node name="Cameras" type="Node" parent="."]
+
+[node name="Main" type="Camera3D" parent="Cameras"]
+transform = Transform3D(1, 0, 0, 0, 0.529683, 0.848196, 0, -0.848196, 0.529683, 0, 5.37348, 3.68967)
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="Environment" type="Node" parent="."]
+
+[connection signal="body_entered" from="EntityCollector" to="." method="GatherEntity"]
+[connection signal="body_exited" from="EntityCollector" to="." method="DropEntity"]

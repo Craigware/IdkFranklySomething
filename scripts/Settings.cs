@@ -11,16 +11,16 @@ namespace UI
 
         public override void _Ready()
         {
-            Load();
+            // Load();
             // var settingGUI = GD.Load<PackedScene>("res://scenes/UI/settings.tscn").Instantiate<Control>();
             // AddChild(settingGUI);
         
-            Timer timer = new() {
-                Autostart = true,
-                WaitTime = splashTime
-            };
-            timer.Timeout += () => { listening = true; };
-            AddChild(timer);
+            // Timer timer = new() {
+            //     Autostart = true,
+            //     WaitTime = splashTime
+            // };
+            // timer.Timeout += () => { listening = true; };
+            // AddChild(timer);
         }
 
         public void Toggle() 
@@ -58,7 +58,7 @@ namespace UI
 
         public void SwapSceneToMain() {
             GD.Print("Swapped");
-            GetTree().ChangeSceneToPacked(GD.Load<PackedScene>("res://scenes/main_menu.tscn"));
+            GetTree().ChangeSceneToPacked(GD.Load<PackedScene>("res://scenes/prototype.tscn"));
         }
 
         public void UpdateSoundVolume(int updatedVolume) {
