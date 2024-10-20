@@ -1,19 +1,14 @@
 using Godot;
+
 namespace Entities
 {
-    public enum EffectType
-    {
-        TARGET,
-        SELF_AOE,
-        TARGET_AOE,
-        SELF,
-        SUMMON,
-        PROJECTILE
-    }
-
     [GlobalClass]
-    public partial class Consumable : Item
+    public partial class Attack : Resource
     {
+        [Export] public string Name;
+        [Export] public string Description;
+        [Export] public StatTypes ResourceType;
+        [Export] public int ResourceCost;
         [Export] public EffectType EffectType;
         [Export] public int TotalDamage;
         [Export] public float Duration;

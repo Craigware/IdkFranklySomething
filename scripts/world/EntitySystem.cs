@@ -1,21 +1,28 @@
-using Entities;
 using Godot;
+using Entities;
 
 namespace World
 {
-    public partial class World : Node
+    public partial class EntitySystem : Node
     {
         [Export] public Node3D Follow;
-        public Node3D collector;
+        public Area3D collector;
         public bool AllyTurn;
         public Godot.Collections.Array<Entity> Entities;
         public int EnemyCount;
         public int AllyCount;
         public int Count;
+        public CameraSystem CameraSystem;
 
         public override void _Ready()
         {
-            collector = (Node3D)GetNode("EntityCollector");
+            CallDeferred("Init");
+        }
+
+        public void Init() {
+            collector = (Area3D)GetNode("/root/Main/EntityCollector");
+            collector.BodyEntered += GatherEntity;
+            collector.BodyExited += DropEntity;
             AllyTurn = true; // This will have to be loaded from save
             Entities = new(); // this too, well all properties really
         }
@@ -81,7 +88,6 @@ namespace World
         {
             Count++;
             if (Count == EnemyCount && !AllyTurn || Count == AllyCount && AllyTurn) {
-                GD.Print("ALL UNITS MOVED");
                 EndTurn();
             }
         }
@@ -89,7 +95,6 @@ namespace World
         public void EndTurn()
         {
             AllyTurn = !AllyTurn;
-            GD.Print("Turn swapped. Ally turn: ", AllyTurn);
             StartTurn();
         }
     }

@@ -9,10 +9,5 @@ namespace Entities
         public Enemy(Stats stats, bool isAlly) : base(stats, isAlly)
         {
         }
-
-        public override void OnCol()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace UI
@@ -6,29 +7,41 @@ namespace UI
     {
         [Export] private float splashTime = 3;
         private SettingResource settings = GD.Load<SettingResource>("res://resources/settings.tres");
-        private Control settingsGui = null;
+        private SettingGUI settingsGui = null;
         private bool listening = false;
 
         public override void _Ready()
         {
             // Load();
-            // var settingGUI = GD.Load<PackedScene>("res://scenes/UI/settings.tscn").Instantiate<Control>();
-            // AddChild(settingGUI);
-        
-            // Timer timer = new() {
-            //     Autostart = true,
-            //     WaitTime = splashTime
-            // };
-            // timer.Timeout += () => { listening = true; };
-            // AddChild(timer);
+            ProcessMode = Node.ProcessModeEnum.Always;
+            settingsGui = GD.Load<PackedScene>("res://scenes/components/settings_gui.tscn").Instantiate<SettingGUI>();
+            Timer timer = new() {
+                Autostart = true,
+                OneShot = true,
+                WaitTime = splashTime
+            };
+            timer.Timeout += () => { listening = true; QueueFree(); };
+            AddChild(timer);
         }
 
         public void Toggle() 
         {
+            if (!GetTree().Paused) {
+                GetNode("/root/Main/UI").AddChild(settingsGui);
+                settingsGui.HideAllBut("Initial");
+            } else {
+                GetNode("/root/Main/UI").RemoveChild(settingsGui);
+            }
+            GetTree().Paused = !GetTree().Paused;
         }
 
         public override void _Input(InputEvent @event)
         {
+            if (Input.IsActionJustPressed("Pause"))
+            {
+                Toggle();
+            }
+
             if (listening) {
                 SwapSceneToMain();
                 listening = false;
@@ -61,7 +74,7 @@ namespace UI
             GetTree().ChangeSceneToPacked(GD.Load<PackedScene>("res://scenes/prototype.tscn"));
         }
 
-        public void UpdateSoundVolume(int updatedVolume) {
+        public void UpdateSoundVolume(float updatedVolume) {
             settings.soundVolume = updatedVolume;
             var soundBusID = AudioServer.GetBusIndex("Sound");
             float normalizedVolume = settings.soundVolume / 100.0f;
@@ -70,7 +83,7 @@ namespace UI
             Save();
         }
         
-        public void UpdateMaterVolume(int updatedVolume) {
+        public void UpdateMaterVolume(float updatedVolume) {
             settings.masterVolume = updatedVolume;
             float normalizedVolume = settings.masterVolume / 100.0f;
             float decibelVolume = normalizedVolume * 86 - 80;
@@ -78,7 +91,7 @@ namespace UI
             Save();
         }
         
-        public void UpdateMusicVolume(int updatedVolume) {
+        public void UpdateMusicVolume(float updatedVolume) {
             settings.musicVolume = updatedVolume;
             var musicBusID = AudioServer.GetBusIndex("Music");
             float normalizedVolume = settings.musicVolume / 100.0f;

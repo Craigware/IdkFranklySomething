@@ -1,18 +1,55 @@
-[gd_scene load_steps=6 format=3 uid="uid://dtf858863evol"]
+[gd_scene load_steps=17 format=3 uid="uid://dtf858863evol"]
 
-[ext_resource type="Script" path="res://scripts/World.cs" id="1_d2yaj"]
+[ext_resource type="Script" path="res://scripts/world/World.cs" id="1_3brjf"]
 [ext_resource type="Script" path="res://scripts/entities/Player.cs" id="2_84f0f"]
+[ext_resource type="Script" path="res://scripts/Stats.cs" id="3_b04yi"]
+[ext_resource type="Script" path="res://scripts/Items/Inventory.cs" id="3_j0swn"]
+[ext_resource type="Resource" uid="uid://ckk8r4rfmnxo5" path="res://resources/items/weapons/proto_sword.tres" id="5_s3v3m"]
+[ext_resource type="Resource" uid="uid://cyy1d4oxq2tk0" path="res://resources/items/armor/hats/proto_hat.tres" id="6_toxuk"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_0aveo"]
 radius = 20.0
 
+[sub_resource type="Resource" id="Resource_f8v7i"]
+script = ExtResource("3_b04yi")
+Health = 10
+Defense = 10
+Wisdom = 10
+Intelligence = 10
+Strength = 10
+Stamina = 10
+Mana = 10
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_x6fo7"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_784dr"]
+albedo_color = Color(0.791816, 0.572335, 0.81647, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_1mqip"]
+material = SubResource("StandardMaterial3D_784dr")
 size = Vector3(2, 2, 2)
 
-[node name="Prototype" type="Node3D"]
-script = ExtResource("1_d2yaj")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ugkr0"]
+billboard_mode = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hxvnb"]
+material = SubResource("StandardMaterial3D_ugkr0")
+orientation = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_npu61"]
+albedo_color = Color(0.417709, 0.565986, 0.296703, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x3ryr"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Environment" id="Environment_en4qx"]
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_3brjf")
 
 [node name="EntityCollector" type="Area3D" parent="."]
 
@@ -23,16 +60,30 @@ shape = SubResource("SphereShape3D_0aveo")
 
 [node name="Ally" type="Node" parent="Entities"]
 
-[node name="Player" type="CharacterBody3D" parent="Entities/Ally"]
+[node name="Player" type="CharacterBody3D" parent="Entities/Ally" node_paths=PackedStringArray("Inventory")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 9)
 script = ExtResource("2_84f0f")
+Ally = true
+baseStats = SubResource("Resource_f8v7i")
+Inventory = NodePath("Inventory")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Ally/Player"]
+visible = false
 shape = SubResource("BoxShape3D_x6fo7")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Ally/Player"]
+visible = false
+gi_mode = 2
 mesh = SubResource("BoxMesh_1mqip")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Entities/Ally/Player"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Entities/Ally/Player"]
+mesh = SubResource("PlaneMesh_hxvnb")
+
+[node name="Inventory" type="Node" parent="Entities/Ally/Player"]
+script = ExtResource("3_j0swn")
+Equiped = [ExtResource("5_s3v3m"), null, ExtResource("6_toxuk"), null, null, null, null, null, null]
 
 [node name="Enemy" type="Node" parent="Entities"]
 
@@ -43,7 +94,68 @@ transform = Transform3D(1, 0, 0, 0, 0.529683, 0.848196, 0, -0.848196, 0.529683, 
 
 [node name="Timers" type="Node" parent="."]
 
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Attacks" type="Control" parent="UI"]
+anchors_preset = 0
+offset_left = 1104.0
+offset_top = 480.0
+offset_right = 1284.0
+offset_bottom = 720.0
+
+[node name="Options" type="VBoxContainer" parent="UI/Attacks"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="QWEWQE" type="RichTextLabel" parent="UI/Attacks/Options"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+bbcode_enabled = true
+text = "[center]World[/center]"
+
+[node name="Button" type="Button" parent="UI/Attacks/Options"]
+layout_mode = 2
+text = "qweqwe"
+
 [node name="Environment" type="Node" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Environment"]
+size = Vector3(100, 2, 100)
+material = SubResource("StandardMaterial3D_npu61")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.712626, -0.633493, -0.301415, -0.0939245, -0.339623, 0.93586, -0.695228, 0.695229, 0.182524, 0, 5.94721, 0)
+shadow_enabled = true
+shadow_opacity = 0.7
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 6, -11)
+size = Vector3(10, 10, 2)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 6, -11)
+size = Vector3(10, 10, 2)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 9, -11)
+size = Vector3(2, 10, 2)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, -12)
+size = Vector3(2, 4, 2)
+material = SubResource("StandardMaterial3D_x3ryr")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_en4qx")
 
 [connection signal="body_entered" from="EntityCollector" to="." method="GatherEntity"]
 [connection signal="body_exited" from="EntityCollector" to="." method="DropEntity"]

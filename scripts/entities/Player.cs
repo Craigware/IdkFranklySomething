@@ -6,24 +6,25 @@ namespace Entities
     public partial class Player : Entity
     {
         public Player() : this(new(), true) {}
-        public Player(Stats stats, bool isAlly) : base(stats, isAlly)
-        {
-        }
+        public Player(Stats stats, bool isAlly) : base(stats, isAlly) {}
 
-
-        public override void _Input(InputEvent @event)
+        public override void _PhysicsProcess(double delta)
         {
-            var inputVec = Input.GetVector("Left", "Right", "Up", "Down");
-            if (inputVec != Vector2.Zero && CanMove)
+            var inputVec = new Vector3();
+            // For some reason Input.getVector doesnt work properly with gamecube controller so we do this
+            // Also I don't need normalization
+            if (Input.IsActionPressed("Left")) inputVec.X -= 1;
+            if (Input.IsActionPressed("Right")) inputVec.X += 1;
+            if (Input.IsActionPressed("Up")) inputVec.Z -= 1;
+            if (Input.IsActionPressed("Down")) inputVec.Z += 1;
+            
+            if (inputVec != Vector3.Zero && CanMove)
             {
-                targetPosition = Position + new Vector3(inputVec.X, 0, inputVec.Y);
+                targetPosition = Position + (inputVec * 2);
                 Move();
             } 
-        }
 
-        public override void OnCol()
-        {
-            throw new System.NotImplementedException();
+            if (Input.IsActionJustPressed("FastQuit")) GetTree().Quit();
         }
     }
 }

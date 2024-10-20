@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Armor" load_steps=4 format=3 uid="uid://cyy1d4oxq2tk0"]
+
+[ext_resource type="Script" path="res://scripts/Stats.cs" id="1_0ac3t"]
+[ext_resource type="Script" path="res://scripts/Items/Armor.cs" id="2_kvf3v"]
+
+[sub_resource type="Resource" id="Resource_m1cp0"]
+script = ExtResource("1_0ac3t")
+Health = 0
+Defense = 0
+Wisdom = 100
+Intelligence = 0
+Strength = 0
+Stamina = 0
+Mana = 0
+
+[resource]
+script = ExtResource("2_kvf3v")
+ArmorType = 0
+StatIncrease = SubResource("Resource_m1cp0")
+ArmorEffect = 0
+Effectiveness = 0.0
+Attacks = null
+Name = "PROTO HAT"
+Description = "THE MOST WISE OF HATS"
+Price = 0
+Sellable = false
+StackSize = 0

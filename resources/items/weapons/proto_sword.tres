@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://ckk8r4rfmnxo5"]
+
+[ext_resource type="Script" path="res://scripts/Stats.cs" id="1_dlokg"]
+[ext_resource type="Script" path="res://scripts/Items/Weapon.cs" id="1_s1fin"]
+
+[sub_resource type="Resource" id="Resource_5d58h"]
+script = ExtResource("1_dlokg")
+Health = 0
+Defense = 5
+Wisdom = 5
+Intelligence = 10
+Strength = 10000
+Stamina = 1
+Mana = 0
+
+[resource]
+script = ExtResource("1_s1fin")
+WeaponType = 1
+StatIncrease = SubResource("Resource_5d58h")
+CastRange = 0
+Range = 0
+Attacks = Array[Object]([])
+Name = "PROTO_SWORD"
+Description = "THE MOST PROTOTYPEY OF SWORDS"
+Price = 0
+Sellable = false
+StackSize = 0

@@ -27,6 +27,6 @@ namespace Entities
         [Export] public Stats StatIncrease;
         [Export] public ArmorEffect ArmorEffect;
         [Export(PropertyHint.Range, "0,1")] public float Effectiveness;
-        [Export] public Godot.Collections.Array<Stats> Moves;
+        [Export] public Godot.Collections.Array<Attack> Attacks;
     }
 }

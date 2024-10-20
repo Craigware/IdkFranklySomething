@@ -6,7 +6,7 @@
 script = ExtResource("1_1fo0h")
 windowType = 3
 Borderless = false
-masterVolume = 50
-musicVolume = 50
-soundVolume = 50
+masterVolume = 50.0
+musicVolume = 50.0
+soundVolume = 50.0
 keybinds = {}

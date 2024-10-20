@@ -7,9 +7,9 @@ namespace UI
     {
         [Export] public DisplayServer.WindowMode windowType;
         [Export] public bool Borderless;
-        [Export] public int masterVolume;
-        [Export] public int musicVolume;
-        [Export] public int soundVolume;
+        [Export] public float masterVolume;
+        [Export] public float musicVolume;
+        [Export] public float soundVolume;
         [Export] public Godot.Collections.Dictionary<string, InputEvent> keybinds;
     }
 } 
